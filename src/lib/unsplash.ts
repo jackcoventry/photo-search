@@ -24,7 +24,12 @@ export async function searchPhotos(
   }
 
   if (error || !data) {
-    throw new Error("Request failed");
+    const rateLimited =
+      response.status === 429 ||
+      (response.status === 403 &&
+        response.headers.get("x-ratelimit-remaining") === "0");
+
+    throw new Error(rateLimited ? "rate-limited" : "failed");
   }
 
   // TODO: Handle errors gracefully

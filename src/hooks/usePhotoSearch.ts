@@ -1,10 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppContext } from "../app/Context";
 
 import { searchPhotos } from "../lib/unsplash";
 
+type SearchStatus =
+  | "idle"
+  | "loading"
+  | "success"
+  | "empty"
+  | "error"
+  | "rate-limited"
+  | "retry-needed";
+
 export function usePhotoSearch() {
   const { state, dispatch } = useAppContext();
+  const [status, setStatus] = useState<SearchStatus>("idle");
 
   const query = state.userDetails?.topic || "";
   const currentPhoto = state.currentPhoto;
@@ -16,10 +26,19 @@ export function usePhotoSearch() {
     const controller = new AbortController();
 
     async function search() {
+      setStatus("loading");
+
+      // TODO: Add multiple request attempts
+
       try {
         const result = await searchPhotos(query || "", controller.signal);
 
-        if (!result || seenPhotoIds.includes(result.id)) {
+        if (!result) {
+          setStatus("empty");
+          return;
+        }
+
+        if (seenPhotoIds.includes(result.id)) {
           return;
         }
 
@@ -29,9 +48,12 @@ export function usePhotoSearch() {
           photo: result,
         });
 
+        setStatus("success");
         return;
       } catch (error) {
-        //
+        setStatus("error");
+
+        if (controller.signal.aborted) return;
       }
     }
 
@@ -43,6 +65,6 @@ export function usePhotoSearch() {
   }, [query, currentPhoto, seenPhotoIds, dispatch]);
 
   return {
-    status: "ok",
+    status,
   };
 }
