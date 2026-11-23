@@ -1,49 +1,18 @@
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-
-const schema = z
-  .object({
-    firstName: z
-      .string()
-      .trim()
-      .min(1, "First name is required.")
-      .max(50, "Please enter less than 50 characters"),
-    lastName: z
-      .string()
-      .trim()
-      .min(1, "Last name is required.")
-      .max(50, "Please enter less than 50 characters"),
-    topic: z.enum(["travel", "cars", "wildlife", "technology", "other"], {
-      error: "Please select a topic",
-    }),
-    other: z
-      .string()
-      .trim()
-      .max(50, "Please enter less than 50 characters")
-      .optional(),
-  })
-  .superRefine((data, ctx) => {
-    if (data.topic !== "other") return;
-
-    if (!data.other) {
-      ctx.addIssue({
-        code: "custom",
-        path: ["other"],
-        message: "Please enter your topic",
-      });
-    }
-  });
-
-type FormValues = z.infer<typeof schema>;
+import { schema, type UserDetails } from "./schema";
+import { useAppContext } from "../../app/Context";
+import { useNavigate } from "react-router";
 
 export function UserForm() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<FormValues>({
+  } = useForm<UserDetails>({
     resolver: zodResolver(schema),
     mode: "onChange",
     shouldUnregister: true,
@@ -57,8 +26,15 @@ export function UserForm() {
     name: "topic",
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
+  const { dispatch } = useAppContext();
+
+  const onSubmit = async (data: UserDetails) => {
+    dispatch({
+      type: "SUBMIT_USER_DETAILS",
+      payload: data,
+    });
+
+    await navigate("/choose");
   };
 
   return (

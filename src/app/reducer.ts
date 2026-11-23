@@ -1,15 +1,23 @@
+import { type UserDetails } from "../features/UserForm/schema";
+
 export type AppState = {
-  details: string;
+  userDetails: UserDetails | null;
 };
 
 export const initialState: AppState = {
-  details: "Hello world!",
+  userDetails: null,
 };
 
-export type AppAction = { type: "SUBMIT_DETAILS"; payload: null };
+export type AppAction = { type: "SUBMIT_USER_DETAILS"; payload: UserDetails };
 
 export function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
+    case "SUBMIT_USER_DETAILS": {
+      return {
+        ...state,
+        userDetails: action.payload,
+      };
+    }
     default:
       return state;
   }
