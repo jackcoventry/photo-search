@@ -17,8 +17,11 @@ export function ResultCard() {
 
       {photo && (
         <>
-          <img src={photo.url} alt={photo.alt} />
-          <p>Photo by {photo.attribution}</p>
+          <img src={photo.thumbnailUrl} alt={photo.alt} />
+          <p>Photo by {photo.author}</p>
+          <a href={photo.externalLink} target="_blank" rel="noopener">
+            View on unsplash
+          </a>
         </>
       )}
     </div>

@@ -17,9 +17,22 @@ export const initialState: AppState = {
 export type Photo = {
   id: string;
   url: string;
+  thumbnailUrl: string;
   alt: string;
-  attribution: string;
+  author: string;
+  externalLink: string;
 };
+
+export function getSearchQuery(userDetails: UserDetails): string {
+  // Normalize the search query
+  return (
+    userDetails.topic === "other"
+      ? (userDetails.other ?? "")
+      : userDetails.topic
+  )
+    .trim()
+    .toLowerCase();
+}
 
 export type AppAction =
   | { type: "SUBMIT_USER_DETAILS"; payload: UserDetails }
@@ -36,9 +49,19 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       };
     }
     case "PHOTO_FOUND": {
+      if (
+        !state.userDetails ||
+        getSearchQuery(state.userDetails) !== action.query ||
+        state.seenPhotoIds.includes(action.photo.id)
+      ) {
+        return state;
+      }
+
       return {
         ...state,
         currentPhoto: action.photo,
+        acceptedPhoto: null,
+        seenPhotoIds: [...state.seenPhotoIds, action.photo.id],
       };
     }
     case "REJECT_PHOTO":

@@ -42,7 +42,8 @@ export function PhotoChooser() {
       {photo ? (
         <div>
           <img src={photo.url} alt={photo.alt} />
-          <p>Photo by {photo.attribution}</p>
+          <p>Photo by {photo.author}</p>
+
           <button type="button" onClick={handleReject}>
             Reject
           </button>
@@ -52,9 +53,20 @@ export function PhotoChooser() {
           </button>
         </div>
       ) : (
-        <p role="status" aria-live="polite">
-          {getStatusMessage(status)}
-        </p>
+        <>
+          <p role="status" aria-live="polite">
+            {getStatusMessage(status)}
+          </p>
+          {(status === "error" || status === "retry-needed") && (
+            <button
+              type="button"
+              onClick={handleReject}
+              className="mt-4 rounded-lg border px-5 py-2"
+            >
+              Try again
+            </button>
+          )}
+        </>
       )}
     </div>
   );

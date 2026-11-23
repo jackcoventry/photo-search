@@ -1,8 +1,9 @@
 import { useForm, useWatch } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { schema, type UserDetails } from "./schema";
 import { useAppContext } from "../../app/Context";
-import { useNavigate } from "react-router";
 
 export function UserForm() {
   const navigate = useNavigate();

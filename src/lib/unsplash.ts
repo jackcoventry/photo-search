@@ -35,7 +35,9 @@ export async function searchPhotos(
   return {
     id: data.id,
     url: data.urls.regular,
+    thumbnailUrl: data.urls.thumb,
     alt: data.alt_description || data.description,
-    attribution: data.photographerName,
+    author: data.user.username,
+    externalLink: data.links.html,
   };
 }
