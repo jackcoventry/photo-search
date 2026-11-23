@@ -29,10 +29,8 @@ export async function searchPhotos(
       (response.status === 403 &&
         response.headers.get("x-ratelimit-remaining") === "0");
 
-    throw new Error(rateLimited ? "rate-limited" : "failed");
+    throw new Error(rateLimited ? "rate-limit" : "failed");
   }
-
-  // TODO: Handle errors gracefully
 
   return {
     id: data.id,

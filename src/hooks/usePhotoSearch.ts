@@ -7,9 +7,9 @@ type SearchStatus =
   | "idle"
   | "loading"
   | "success"
-  | "empty"
+  | "empty-result"
   | "error"
-  | "rate-limited"
+  | "rate-limit"
   | "retry-needed";
 
 export function usePhotoSearch() {
@@ -34,7 +34,7 @@ export function usePhotoSearch() {
         const result = await searchPhotos(query || "", controller.signal);
 
         if (!result) {
-          setStatus("empty");
+          setStatus("empty-result");
           return;
         }
 

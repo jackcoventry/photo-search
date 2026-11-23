@@ -1,14 +1,15 @@
 import { useAppContext } from "../../app/Context";
 import { usePhotoSearch } from "../../hooks/usePhotoSearch";
+import { useNavigate } from "react-router";
 
 function getStatusMessage(status: string) {
   switch (status) {
     case "loading":
     case "idle":
       return "Finding a photo...";
-    case "empty":
+    case "empty-result":
       return "No photos found for this topic!";
-    case "rate-limited":
+    case "rate-limit":
       return "Search limit reached! Please try again later";
     default:
       return "Unable to load an image";
@@ -18,14 +19,20 @@ function getStatusMessage(status: string) {
 export function PhotoChooser() {
   const { state, dispatch } = useAppContext();
   const { status } = usePhotoSearch();
+  const navigate = useNavigate();
+
   const photo = state.currentPhoto;
 
   function handleReject() {
     dispatch({ type: "REJECT_PHOTO" });
   }
 
-  function handleAccept() {
-    //
+  async function handleAccept() {
+    if (!photo) return;
+
+    dispatch({ type: "ACCEPT_PHOTO" });
+
+    await navigate("/result");
   }
 
   return (
