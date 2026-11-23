@@ -17,6 +17,7 @@ export const initialState: AppState = {
 export type Photo = {
   id: string;
   url: string;
+  alt: string;
   attribution: string;
 };
 

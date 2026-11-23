@@ -7,9 +7,11 @@ export function usePhotoSearch() {
   const { state, dispatch } = useAppContext();
 
   const query = state.userDetails?.topic || "";
+  const currentPhoto = state.currentPhoto;
+  const seenPhotoIds = state.seenPhotoIds;
 
   useEffect(() => {
-    if (!query) return;
+    if (!query || currentPhoto) return;
 
     const controller = new AbortController();
 
@@ -17,19 +19,14 @@ export function usePhotoSearch() {
       try {
         const result = await searchPhotos(query || "", controller.signal);
 
-        if (!result) {
+        if (!result || seenPhotoIds.includes(result.id)) {
           return;
         }
 
-        console.log("usePhotoSearch", JSON.stringify(result));
-
         dispatch({
           type: "PHOTO_FOUND",
-          query: query,
-          photo: {
-            id: result.photo.id,
-            url: result.photo.urls.regular,
-          },
+          query: query!,
+          photo: result,
         });
 
         return;
@@ -43,7 +40,7 @@ export function usePhotoSearch() {
     return () => {
       controller.abort();
     };
-  }, [query, dispatch]);
+  }, [query, currentPhoto, seenPhotoIds, dispatch]);
 
   return {
     status: "ok",
