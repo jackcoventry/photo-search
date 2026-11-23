@@ -36,38 +36,62 @@ export function PhotoChooser() {
   }
 
   return (
-    <div>
+    <article className="flex flex-col gap-8">
       <h1>Choose your photo</h1>
 
-      {photo ? (
-        <div>
-          <img src={photo.url} alt={photo.alt} />
-          <p>Photo by {photo.author}</p>
+      <section className="bg-white shadow-md rounded-2xl p-4 flex flex-col gap-2">
+        {photo ? (
+          <div className="mx-auto max-w-2xl flex flex-col gap-4">
+            <figure className="flex flex-col gap-4">
+              <img src={photo.url} alt={photo.alt} />
+              <figcaption>
+                Photo by {photo.author}
+                <a
+                  href={photo.externalLink}
+                  target="_blank"
+                  rel="noopener"
+                  className="text-gray-800 hover:text-green-500 block text-xs"
+                >
+                  View on unsplash
+                </a>
+              </figcaption>
+            </figure>
 
-          <button type="button" onClick={handleReject}>
-            Reject
-          </button>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={handleReject}
+                className="bg-red-500 text-white p-4 rounded-md hover:bg-black cursor-pointer"
+              >
+                Reject
+              </button>
 
-          <button type="button" onClick={handleAccept}>
-            Accept
-          </button>
-        </div>
-      ) : (
-        <>
-          <p role="status" aria-live="polite">
-            {getStatusMessage(status)}
-          </p>
-          {(status === "error" || status === "retry-needed") && (
-            <button
-              type="button"
-              onClick={handleReject}
-              className="mt-4 rounded-lg border px-5 py-2"
-            >
-              Try again
-            </button>
-          )}
-        </>
-      )}
-    </div>
+              <button
+                type="button"
+                onClick={handleAccept}
+                className="bg-green-500 text-white p-4 rounded-md hover:bg-black cursor-pointer"
+              >
+                Accept
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <p role="status" aria-live="polite">
+              {getStatusMessage(status)} ({status})
+            </p>
+            {status === "error" && (
+              <button
+                type="button"
+                onClick={handleReject}
+                className="mt-4 rounded-lg border px-5 py-2"
+              >
+                Try again
+              </button>
+            )}
+          </>
+        )}
+      </section>
+    </article>
   );
 }

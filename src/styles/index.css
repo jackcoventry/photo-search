@@ -1,2 +1,6 @@
 @import "tailwindcss";
 @import "./reset.css";
+
+html {
+  background-color: #f9f9f9;
+}

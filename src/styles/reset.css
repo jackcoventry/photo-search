@@ -34,7 +34,6 @@ ol[role="list"] {
 
 /* Set core body defaults */
 body {
-  min-height: 100vh;
   line-height: 1.5;
 }
 
@@ -87,4 +86,10 @@ textarea:not([rows]) {
 /* Anything that has been anchored to should have extra scroll margin */
 :target {
   scroll-margin-block: 5ex;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
 }

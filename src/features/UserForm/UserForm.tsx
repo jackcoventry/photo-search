@@ -39,52 +39,93 @@ export function UserForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <fieldset>
-        <div>
-          <label htmlFor="firstName">First Name</label>
-          <input {...register("firstName")} />
-          <p>{errors.firstName?.message}</p>
-        </div>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
+      className="flex flex-col gap-6 bg-white shadow-md rounded-2xl p-8"
+    >
+      <div className="flex flex-col gap-2">
+        <label className="block" htmlFor="firstName">
+          First Name
+        </label>
+        <input
+          className="border-2 border-gray-300 p-2 rounded-md"
+          {...register("firstName")}
+          id="firstName"
+        />
 
-        <div>
-          <label htmlFor="lastName">Last Name</label>
-          <input {...register("lastName")} />
-          <p>{errors.lastName?.message}</p>
-        </div>
+        {errors.firstName && (
+          <p role="alert" className="text-red-500">
+            {errors.firstName?.message}
+          </p>
+        )}
+      </div>
 
-        <div>
-          <label htmlFor="topic">Preferred topic</label>
-          <select id="topic" {...register("topic")} defaultValue="">
-            <option value="" disabled>
-              Select a topic
-            </option>
-            <option value="travel">Travel</option>
-            <option value="cars">Cars</option>
-            <option value="wildlife">Wildlife</option>
-            <option value="technology">Technology</option>
-            <option value="other">Other</option>
-          </select>
+      <div className="flex flex-col gap-2">
+        <label htmlFor="lastName">Last Name</label>
+        <input
+          className="border-2 border-gray-300 p-2 rounded-md"
+          {...register("lastName")}
+          id="lastName"
+        />
 
-          {errors.topic && (
-            <p id="topic-error" role="alert">
-              {errors.topic.message}
+        {errors.lastName && (
+          <p role="alert" className="text-red-500">
+            {errors.lastName?.message}
+          </p>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label htmlFor="topic">Preferred topic</label>
+        <select
+          id="topic"
+          {...register("topic")}
+          defaultValue=""
+          className="border-2 border-gray-300 p-2 rounded-md"
+        >
+          <option value="" disabled>
+            Select a topic
+          </option>
+          <option value="travel">Travel</option>
+          <option value="cars">Cars</option>
+          <option value="wildlife">Wildlife</option>
+          <option value="technology">Technology</option>
+          <option value="other">Other</option>
+        </select>
+
+        {errors.topic && (
+          <p role="alert" className="text-red-500">
+            {errors.topic.message}
+          </p>
+        )}
+      </div>
+
+      {selectedTopic === "other" && (
+        <div className="flex flex-col gap-2">
+          <label htmlFor="other">Other</label>
+          <input
+            className="border-2 border-gray-300 p-2 rounded-md"
+            {...register("other")}
+            id="other"
+          />
+
+          {errors.other && (
+            <p role="alert" className="text-red-500">
+              {errors.other?.message}
             </p>
           )}
         </div>
+      )}
 
-        {selectedTopic === "other" && (
-          <div>
-            <label htmlFor="other">Other</label>
-            <input {...register("other")} />
-            <p>{errors.other?.message}</p>
-          </div>
-        )}
-
-        <div>
-          <button type="submit">Submit</button>
-        </div>
-      </fieldset>
+      <div className="flex flex-col gap-2">
+        <button
+          type="submit"
+          className="bg-black text-white p-4 rounded-md hover:bg-green-500 cursor-pointer"
+        >
+          Submit
+        </button>
+      </div>
     </form>
   );
 }
