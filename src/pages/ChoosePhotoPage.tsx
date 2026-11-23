@@ -1,3 +1,7 @@
+import { useAppContext } from "../app/Context";
+
 export function ChoosePhotoPage() {
-  return <h1>Choose your photo</h1>;
+  const { state } = useAppContext();
+
+  return <h1>Choose your photo - {state.details}</h1>;
 }
