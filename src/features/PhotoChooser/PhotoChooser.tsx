@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useAppContext } from "../../app/Context";
 import { usePhotoSearch } from "../../hooks/usePhotoSearch";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 function getStatusMessage(status: string) {
   switch (status) {
@@ -155,6 +155,9 @@ export function PhotoChooser() {
             )}
           </div>
         )}
+        <Link to="/" className="hover:text-green-500 cursor-pointer text-right">
+          Change topic
+        </Link>
       </section>
     </article>
   );

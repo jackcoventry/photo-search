@@ -7,6 +7,7 @@ import { useAppContext } from "../../app/Context";
 
 export function UserForm() {
   const navigate = useNavigate();
+  const { state, dispatch } = useAppContext();
 
   const {
     register,
@@ -17,7 +18,7 @@ export function UserForm() {
     resolver: zodResolver(schema),
     mode: "onChange",
     shouldUnregister: true,
-    defaultValues: {
+    defaultValues: state.userDetails ?? {
       other: "",
     },
   });
@@ -26,8 +27,6 @@ export function UserForm() {
     control,
     name: "topic",
   });
-
-  const { dispatch } = useAppContext();
 
   const onSubmit = async (data: UserDetails) => {
     dispatch({
@@ -106,7 +105,7 @@ export function UserForm() {
             <select
               id="topic"
               {...register("topic")}
-              defaultValue=""
+              defaultValue={state.userDetails?.topic ?? ""}
               required
               aria-invalid={Boolean(errors.topic)}
               aria-describedby={errors.topic ? "topic-error" : undefined}
