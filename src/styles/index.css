@@ -1,6 +1,11 @@
 @import "tailwindcss";
-@import "./reset.css";
 
 html {
   background-color: #f9f9f9;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
 }
