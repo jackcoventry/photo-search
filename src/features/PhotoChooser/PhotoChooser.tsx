@@ -36,27 +36,12 @@ export function PhotoChooser() {
   }
 
   return (
-    <article className="flex flex-col gap-8">
+    <article className="flex flex-col gap-4">
       <h1>Choose your photo</h1>
 
-      <section className="bg-white shadow-md rounded-2xl p-4 flex flex-col gap-2">
+      <section className="bg-white shadow-md rounded-2xl p-4 flex flex-col gap-6">
         {photo ? (
-          <div className="mx-auto max-w-2xl flex flex-col gap-4">
-            <figure className="flex flex-col gap-4">
-              <img src={photo.url} alt={photo.alt} />
-              <figcaption>
-                Photo by {photo.author}
-                <a
-                  href={photo.externalLink}
-                  target="_blank"
-                  rel="noopener"
-                  className="text-gray-800 hover:text-green-500 block text-xs"
-                >
-                  View on unsplash
-                </a>
-              </figcaption>
-            </figure>
-
+          <>
             <div className="flex gap-2">
               <button
                 type="button"
@@ -74,7 +59,23 @@ export function PhotoChooser() {
                 Accept
               </button>
             </div>
-          </div>
+            <div className="mx-auto max-w-2xl flex flex-col gap-4">
+              <figure className="flex flex-col gap-4">
+                <img src={photo.url} alt={photo.alt} />
+                <figcaption>
+                  Photo by {photo.author}
+                  <a
+                    href={photo.externalLink}
+                    target="_blank"
+                    rel="noopener"
+                    className="text-gray-800 hover:text-green-500 block text-xs"
+                  >
+                    View on unsplash
+                  </a>
+                </figcaption>
+              </figure>
+            </div>
+          </>
         ) : (
           <>
             <p role="status" aria-live="polite">

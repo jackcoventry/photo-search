@@ -32,12 +32,22 @@ export async function searchPhotos(
     throw new Error(rateLimited ? "rate-limit" : "failed");
   }
 
+  const photo = Array.isArray(data) ? data[0] : data;
+  if (!photo) return null;
+
+  const altDescription =
+    "alt_description" in photo ? photo.alt_description : undefined;
+  const description = "description" in photo ? photo.description : undefined;
+
   return {
-    id: data.id,
-    url: data.urls.regular,
-    thumbnailUrl: data.urls.thumb,
-    alt: data.alt_description || data.description,
-    author: data.user.username,
-    externalLink: data.links.html,
+    id: photo.id,
+    url: photo.urls.regular,
+    thumbnailUrl: photo.urls.thumb,
+    alt:
+      (typeof altDescription === "string" && altDescription) ||
+      (typeof description === "string" && description) ||
+      `Photo of ${query}`,
+    author: photo.user.username,
+    externalLink: photo.links.html,
   };
 }
