@@ -43,9 +43,16 @@ export type AppAction =
 export function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
     case "SUBMIT_USER_DETAILS": {
+      const hasQueryChanged =
+        !state.userDetails ||
+        getSearchQuery(state.userDetails) !== getSearchQuery(action.payload);
+
       return {
         ...state,
         userDetails: action.payload,
+        currentPhoto: hasQueryChanged ? null : state.currentPhoto,
+        acceptedPhoto: hasQueryChanged ? null : state.acceptedPhoto,
+        seenPhotoIds: hasQueryChanged ? [] : state.seenPhotoIds,
       };
     }
     case "PHOTO_FOUND": {
