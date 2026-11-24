@@ -7,7 +7,9 @@ export function ResultCard() {
 
   return (
     <article className="flex flex-col gap-4">
-      <h1 tabIndex={-1}>Hi, {user?.firstName}! Here is your card!</h1>
+      <h1 tabIndex={-1} className="break-words">
+        Hi, {user?.firstName}! Here is your card!
+      </h1>
 
       <section className="bg-white shadow-md rounded-2xl p-4 grid grid-cols-2 gap-6">
         {photo && (
@@ -26,7 +28,7 @@ export function ResultCard() {
             </figcaption>
           </figure>
         )}
-        <dl className="grid grid-cols-1 content-start gap-2">
+        <dl className="grid grid-cols-1 content-start gap-2 break-words">
           <dt className="text-sm text-gray-600">First Name</dt>
           <dd className="">{user?.firstName}</dd>
           <dt className="text-sm  text-gray-600">Last Name</dt>

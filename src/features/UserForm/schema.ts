@@ -14,19 +14,19 @@ export const schema = z
       .string()
       .trim()
       .min(1, "First name is required.")
-      .max(50, "Please enter less than 50 characters"),
+      .max(50, "Please enter 50 characters or fewer"),
     lastName: z
       .string()
       .trim()
       .min(1, "Last name is required.")
-      .max(50, "Please enter less than 50 characters"),
+      .max(50, "Please enter 50 characters or fewer"),
     topic: z.enum(TOPICS, {
       error: "Please select a topic",
     }),
     other: z
       .string()
       .trim()
-      .max(50, "Please enter less than 50 characters")
+      .max(50, "Please enter 50 characters or fewer")
       .optional(),
   })
   .superRefine((data, ctx) => {
