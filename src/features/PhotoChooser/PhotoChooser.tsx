@@ -18,7 +18,7 @@ function getStatusMessage(status: string) {
 
 export function PhotoChooser() {
   const { state, dispatch } = useAppContext();
-  const { status } = usePhotoSearch();
+  const { status, retry } = usePhotoSearch();
   const navigate = useNavigate();
 
   const photo = state.currentPhoto;
@@ -77,20 +77,65 @@ export function PhotoChooser() {
             </div>
           </>
         ) : (
-          <>
+          <div className="flex flex-col gap-4">
             <p role="status" aria-live="polite">
               {getStatusMessage(status)} ({status})
             </p>
+
+            {status === "loading" && (
+              <span className="w-24 mx-auto p-4">
+                <svg
+                  fill="hsl(228, 97%, 42%)"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden
+                >
+                  <circle cx="4" cy="12" r="3">
+                    <animate
+                      id="spinner_qFRN"
+                      begin="0;spinner_OcgL.end+0.25s"
+                      attributeName="cy"
+                      calcMode="spline"
+                      dur="0.6s"
+                      values="12;6;12"
+                      keySplines=".33,.66,.66,1;.33,0,.66,.33"
+                    />
+                  </circle>
+                  <circle cx="12" cy="12" r="3">
+                    <animate
+                      begin="spinner_qFRN.begin+0.1s"
+                      attributeName="cy"
+                      calcMode="spline"
+                      dur="0.6s"
+                      values="12;6;12"
+                      keySplines=".33,.66,.66,1;.33,0,.66,.33"
+                    />
+                  </circle>
+                  <circle cx="20" cy="12" r="3">
+                    <animate
+                      id="spinner_OcgL"
+                      begin="spinner_qFRN.begin+0.2s"
+                      attributeName="cy"
+                      calcMode="spline"
+                      dur="0.6s"
+                      values="12;6;12"
+                      keySplines=".33,.66,.66,1;.33,0,.66,.33"
+                    />
+                  </circle>
+                </svg>
+              </span>
+            )}
+
             {status === "error" && (
               <button
                 type="button"
-                onClick={handleReject}
+                onClick={retry}
                 className="mt-4 rounded-lg border px-5 py-2"
               >
                 Try again
               </button>
             )}
-          </>
+          </div>
         )}
       </section>
     </article>
