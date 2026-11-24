@@ -52,7 +52,6 @@ export function appReducer(state: AppState, action: AppAction): AppState {
         userDetails: action.payload,
         currentPhoto: hasQueryChanged ? null : state.currentPhoto,
         acceptedPhoto: hasQueryChanged ? null : state.acceptedPhoto,
-        seenPhotoIds: hasQueryChanged ? [] : state.seenPhotoIds,
       };
     }
     case "PHOTO_FOUND": {

@@ -144,11 +144,13 @@ export function PhotoChooser() {
               </span>
             )}
 
-            {(status === "error" || status === "retry-needed") && (
+            {(status === "error" ||
+              status === "retry-needed" ||
+              status === "rate-limit") && (
               <button
                 type="button"
                 onClick={handleRetry}
-                className="mt-4 rounded-lg border px-5 py-2"
+                className="mt-4 bg-green-500 text-white p-4 rounded-md hover:bg-black cursor-pointer"
               >
                 Try again
               </button>
