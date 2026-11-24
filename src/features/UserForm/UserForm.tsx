@@ -40,7 +40,7 @@ export function UserForm() {
 
   return (
     <article className="flex flex-col gap-4">
-      <h1>Choose your photo</h1>
+      <h1 tabIndex={-1}>Enter your details and preferred topic</h1>
       <section className="bg-white shadow-md rounded-2xl p-4 gap-6">
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -55,10 +55,20 @@ export function UserForm() {
               className="border-2 border-gray-300 p-2 rounded-md"
               {...register("firstName")}
               id="firstName"
+              required
+              autoComplete="given-name"
+              aria-invalid={Boolean(errors.firstName)}
+              aria-describedby={
+                errors.firstName ? "firstName-error" : undefined
+              }
             />
 
             {errors.firstName && (
-              <p role="alert" className="text-red-500 text-sm">
+              <p
+                id="firstName-error"
+                role="alert"
+                className="text-red-500 text-sm"
+              >
                 {errors.firstName?.message}
               </p>
             )}
@@ -72,10 +82,18 @@ export function UserForm() {
               className="border-2 border-gray-300 p-2 rounded-md"
               {...register("lastName")}
               id="lastName"
+              required
+              autoComplete="family-name"
+              aria-invalid={Boolean(errors.lastName)}
+              aria-describedby={errors.lastName ? "lastName-error" : undefined}
             />
 
             {errors.lastName && (
-              <p role="alert" className="text-red-500 text-sm">
+              <p
+                id="lastName-error"
+                role="alert"
+                className="text-red-500 text-sm"
+              >
                 {errors.lastName?.message}
               </p>
             )}
@@ -89,6 +107,9 @@ export function UserForm() {
               id="topic"
               {...register("topic")}
               defaultValue=""
+              required
+              aria-invalid={Boolean(errors.topic)}
+              aria-describedby={errors.topic ? "topic-error" : undefined}
               className="border-2 border-gray-300 p-2 rounded-md"
             >
               <option value="" disabled>
@@ -102,7 +123,7 @@ export function UserForm() {
             </select>
 
             {errors.topic && (
-              <p role="alert" className="text-red-500 text-sm">
+              <p id="topic-error" role="alert" className="text-red-500 text-sm">
                 {errors.topic.message}
               </p>
             )}
@@ -111,16 +132,23 @@ export function UserForm() {
           {selectedTopic === "other" && (
             <div className="flex flex-col gap-2">
               <label className="text-sm text-gray-600" htmlFor="other">
-                Other
+                Your preferred topic
               </label>
               <input
                 className="border-2 border-gray-300 p-2 rounded-md"
                 {...register("other")}
                 id="other"
+                required
+                aria-invalid={Boolean(errors.other)}
+                aria-describedby={errors.other ? "other-error" : undefined}
               />
 
               {errors.other && (
-                <p role="alert" className="text-red-500 text-sm">
+                <p
+                  id="other-error"
+                  role="alert"
+                  className="text-red-500 text-sm"
+                >
                   {errors.other?.message}
                 </p>
               )}
