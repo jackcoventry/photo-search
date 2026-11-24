@@ -4,6 +4,8 @@ import { getSearchQuery } from "../app/reducer";
 
 import { searchPhotos } from "../lib/unsplash";
 
+const MAX_SEARCH_ATTEMPTS = 3;
+
 type SearchStatus =
   | "idle"
   | "loading"
@@ -34,31 +36,32 @@ export function usePhotoSearch() {
     async function search() {
       setStatus("loading");
 
-      // TODO: Add multiple request attempts
-
       try {
-        const result = await searchPhotos(query, controller.signal);
+        for (let attempt = 0; attempt < MAX_SEARCH_ATTEMPTS; attempt++) {
+          const result = await searchPhotos(query, controller.signal);
 
-        if (controller.signal.aborted) return;
+          if (controller.signal.aborted) return;
 
-        if (!result) {
-          setStatus("empty-result");
+          if (!result) {
+            setStatus("empty-result");
+            return;
+          }
+
+          if (seenPhotoIds.includes(result.id)) {
+            continue;
+          }
+
+          dispatch({
+            type: "PHOTO_FOUND",
+            query,
+            photo: result,
+          });
+
+          setStatus("success");
           return;
         }
 
-        if (seenPhotoIds.includes(result.id)) {
-          return;
-        }
-
-        dispatch({
-          type: "PHOTO_FOUND",
-          query,
-          photo: result,
-        });
-
-        setStatus("success");
-
-        return;
+        setStatus("retry-needed");
       } catch (error) {
         if (controller.signal.aborted) return;
 

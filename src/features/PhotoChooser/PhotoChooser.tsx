@@ -11,6 +11,8 @@ function getStatusMessage(status: string) {
       return "No photos found for this topic!";
     case "rate-limit":
       return "Search limit reached! Please try again later";
+    case "retry-needed":
+      return "We couldn't find a photo you haven't seen yet. Please try again.";
     default:
       return "Unable to load an image";
   }
@@ -126,7 +128,7 @@ export function PhotoChooser() {
               </span>
             )}
 
-            {status === "error" && (
+            {(status === "error" || status === "retry-needed") && (
               <button
                 type="button"
                 onClick={retry}
