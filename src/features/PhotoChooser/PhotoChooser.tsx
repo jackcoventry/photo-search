@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useAppContext } from "../../app/Context";
 import { usePhotoSearch } from "../../hooks/usePhotoSearch";
 import { useNavigate } from "react-router";
@@ -6,6 +7,7 @@ function getStatusMessage(status: string) {
   switch (status) {
     case "loading":
     case "idle":
+    case "success":
       return "Finding a photo...";
     case "empty-result":
       return "No photos found for this topic!";
@@ -22,11 +24,18 @@ export function PhotoChooser() {
   const { state, dispatch } = useAppContext();
   const { status, retry } = usePhotoSearch();
   const navigate = useNavigate();
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
   const photo = state.currentPhoto;
 
   function handleReject() {
+    headingRef.current?.focus();
     dispatch({ type: "REJECT_PHOTO" });
+  }
+
+  function handleRetry() {
+    headingRef.current?.focus();
+    retry();
   }
 
   async function handleAccept() {
@@ -39,9 +48,20 @@ export function PhotoChooser() {
 
   return (
     <article className="flex flex-col gap-4">
-      <h1>Choose your photo</h1>
+      <h1 ref={headingRef} tabIndex={-1}>
+        Choose your photo
+      </h1>
 
       <section className="bg-white shadow-md rounded-2xl p-4 flex flex-col gap-6">
+        <p
+          role="status"
+          aria-live="polite"
+          className={photo ? "sr-only" : undefined}
+        >
+          {photo
+            ? "A new photo has been loaded: please accept or reject it"
+            : getStatusMessage(status)}
+        </p>
         {photo ? (
           <>
             <div className="flex gap-2">
@@ -80,12 +100,8 @@ export function PhotoChooser() {
           </>
         ) : (
           <div className="flex flex-col gap-4">
-            <p role="status" aria-live="polite">
-              {getStatusMessage(status)} ({status})
-            </p>
-
             {status === "loading" && (
-              <span className="w-24 mx-auto p-4">
+              <span className="w-24 mx-auto p-4 motion-reduce:hidden">
                 <svg
                   fill="hsl(228, 97%, 42%)"
                   viewBox="0 0 24 24"
@@ -131,7 +147,7 @@ export function PhotoChooser() {
             {(status === "error" || status === "retry-needed") && (
               <button
                 type="button"
-                onClick={retry}
+                onClick={handleRetry}
                 className="mt-4 rounded-lg border px-5 py-2"
               >
                 Try again
