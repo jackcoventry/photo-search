@@ -6,17 +6,13 @@ export function ResultCard() {
   const user = state.userDetails;
 
   return (
-    <article className="flex flex-col gap-4 ">
-      <h1>Hi, {user?.firstName}! Here is your chosen card!</h1>
+    <article className="flex flex-col gap-4">
+      <h1 tabIndex={-1}>Hi, {user?.firstName}! Here is your card!</h1>
 
       <section className="bg-white shadow-md rounded-2xl p-4 grid grid-cols-2 gap-6">
         {photo && (
           <figure className="flex flex-col gap-4">
-            <img
-              src={photo.thumbnailUrl}
-              alt={photo.alt}
-              className="max-w-28"
-            />
+            <img src={photo.thumbnailUrl} alt={photo.alt} className="w-full" />
             <figcaption>
               Photo by {photo.author}
               <a
@@ -30,12 +26,12 @@ export function ResultCard() {
             </figcaption>
           </figure>
         )}
-        <div className="grid grid-cols-1 content-start gap-2">
+        <dl className="grid grid-cols-1 content-start gap-2">
           <dt className="text-sm text-gray-600">First Name</dt>
           <dd className="">{user?.firstName}</dd>
           <dt className="text-sm  text-gray-600">Last Name</dt>
           <dd className="">{user?.lastName}</dd>
-        </div>
+        </dl>
       </section>
     </article>
   );
